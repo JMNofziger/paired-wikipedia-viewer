@@ -1,0 +1,85 @@
+<!-- User Stories: 
+# I can search Wikipedia entries in a search box and see the resulting Wikipedia entries.
+# There should be a clear button in the search box
+# I can click a button to see a random Wikipedia entry, then user should be redirected to random page
+#
+# Here's a URL you can use to get a random Wikipedia article: https://en.wikipedia.org/wiki/Special:Random - Check
+# Here's an entry on using Wikipedia's API: https://www.mediawiki.org/wiki/API:Main_page
+# https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=jsonfm
+-->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FCC Wiki Viwer</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        Wiki Viewer
+      </h1>
+    </header>
+
+    <main>
+
+    	<button type="submit"><a href="https://en.wikipedia.org/wiki/Special:Random" target="_blank" class="button">Random Wikipedia Article</a></button>
+      
+      
+      <form>
+        <!-- User inputs their desired search term -->
+        Search Term: <input type="text" id='searchTerm'> <!-- click DOESN'T happen here -->
+        <!-- User clicks this button to perform search -->
+        <button type="submit" id='searchButton' >Search</button> <!-- Click happens here! -->
+
+      
+        
+     </form>
+    </main>
+
+    <footer>
+      <a href="https://glitch.com">
+        Remix this in Glitch
+      </a>
+    </footer>
+
+    
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script>
+    	$(document).ready(function(){
+        // identify the trigger element --> button
+        $("#searchButton").on("click", function(){
+        	//define actions to happen
+          var ourSearchTerm = $("#searchTerm").val();
+          var requestURL = 'https://en.wikipedia.org/w/api.php?action=query&titles='+ourSearchTerm+'&format=json'
+          $.ajax({
+            		//this has to be jsonp format NOT json because of cross origin request restrictions
+                dataType: "jsonp",
+                url: requestURL,
+                headers: { 'Api-User-Agent': 'Example/1.0' },
+                type: 'POST',
+                success: function(data) {
+                   console.log(data);
+              }
+              });
+          console.log(requestURL);
+          
+        })
+        
+        // define the action --> call the api with user query appended
+        
+        
+      })
+    </script>
+    <script src="/client.js"></script>
+
+  </body>
+</html>
